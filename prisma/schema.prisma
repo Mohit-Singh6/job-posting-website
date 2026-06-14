@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[] // Correctly maps the relation to the Account table
+  jobs         Job[]  @relation("Posted Jobs")
+  applications Application[]
+}
+
+model Job {
+  id String @id @default(cuid())
+  title String
+  company String
+  salary Int?
+  mode String?
+  location String
+  contactEmail String?
+  description String @db.Text
+  postedAt DateTime @default(now())
+  lastDate DateTime
+  postedById String
+  postedBy User @relation("Posted Jobs", fields: [postedById], references: [id], onDelete: Cascade) // PostedJobs is the name of the relation and if you name the relation here, then you also have to name it in the User (@relation("Posted Jobs")), then only it can work
+  applications Application[]
+}
+
+model Application {
+  id String @id @default(cuid())
+  userId String
+  jobId String
+  skills String[]
+  qualifications String[]
+  hobbies String[]
+  status String @default("Pending") // is the application pending, accepted or rejected
+  appliedAt DateTime @default(now())
+
+  applicationFor Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  applicationBy User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, userId]) // this should be a unique combination each time, a user can't apply to a job twice
+}
