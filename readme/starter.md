@@ -16,8 +16,12 @@ package.json
 
 npx prisma
 npx prisma init --output ../generated/prisma
+
+- Now create your models in the schema.prisma
+
 npx prisma migrate dev --name name_of_migration
 npx prisma generate
+- Now create lib/prisma.ts and paste the code from docs
 
 ### Now we are using next-auth for authentication, so we need to set it up, so copy paste the model in the schema.prisma, that is required for authentication: 
 LINK: https://next-auth.js.org/v3/adapters/prisma
