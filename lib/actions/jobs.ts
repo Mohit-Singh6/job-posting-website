@@ -5,6 +5,9 @@ export async function getJobs() {
         const data = prisma.job.findMany({
             orderBy: {
                 postedAt: "desc"
+            },
+            include: {
+                postedBy: true // Include the data of the user who posted the job
             }
         });
         return data;

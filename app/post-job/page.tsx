@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { postJob } from '@/lib/actions/postJob';
-import { redirect } from 'next/navigation';
 
 export default function PostJob() {
     const [loading, setLoading] = useState(false);
@@ -30,7 +29,7 @@ export default function PostJob() {
 
         try {
             await postJob(jobData);
-            redirect('/'); // Redirect to home page after successful job posting
+            window.location.href = '/jobs'; // Redirect to jobs page after successful post
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to post job');
             setLoading(false);
