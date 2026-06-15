@@ -7,5 +7,5 @@ export const login = async () => { // the name difference (login - signin) is ju
 }
 
 export const logout = async () => {
-    await signOut({redirectTo: '/'});
+    await signOut({redirectTo: '/'}); // no need to write the provider here.
 }

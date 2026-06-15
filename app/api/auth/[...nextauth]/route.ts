@@ -3,7 +3,7 @@
 
 import {handlers} from "@/auth";
 
-export const { GET, POST } = handlers;
+export const { GET, POST } = handlers; // handlers is an object that contains the GET and POST handlers for the authentication routes. By exporting them, we are telling Next.js to use these handlers for the corresponding HTTP methods on this route. This allows us to handle authentication requests (like sign in and sign out) using the logic defined in our NextAuth configuration.
 
 // export const authOptions = {
 //   // Configure one or more authentication providers
